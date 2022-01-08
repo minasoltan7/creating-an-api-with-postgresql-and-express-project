@@ -32,5 +32,3 @@ if (process.env.ENV === 'test') {
 }
 
 export default Client
-
-console.log(POSTGRES_DATABASE, POSTGRES_DATABASE_TEST, POSTGRES_HOST, POSTGRES_USER)

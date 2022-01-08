@@ -23,4 +23,3 @@ app.listen(process.env.PORT, () => {
   console.log(`App is running on port ${process.env.PORT}`)
 })
 
-// set ENV=test&& db-migrate --env test up &&jasmine-ts && db-migrate db:drop test
