@@ -34,7 +34,7 @@ export class ProductModel {
     }
   }
 
-  async create(p: Product): Promise<Product[]> {
+  async create(p: Product): Promise<Product> {
     try {
       const conn = await Client.connect()
       // the $1,$2 refer to the arguments number in the array of argument(s) we pass in the .query()

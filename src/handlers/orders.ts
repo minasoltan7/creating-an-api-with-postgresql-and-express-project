@@ -10,19 +10,42 @@ const ordersLibrary = new OrderModel()
 // index function to show al items in our database
 const index = async (req: express.Request, res: express.Response) => {
   const allOrders = await ordersLibrary.index()
+  // Validating user token
+  try {
+    const authorizationHeader: unknown = req.headers.authorization
+    const token = (authorizationHeader as string).split(' ')[1]
+    jwt.verify(token, process.env.TOKEN_SECRET as string)
+  } catch (err) {
+    res.status(401)
+    res.json('Access denied . Token is invalid')
+    // we must use "return " to exit the function when the token is not valid
+    return
+  }
+
   try {
     res.json(allOrders)
   } catch (err) {
     res.status(400).send(`cant get oders .Error :${err}`)
   }
 }
-// Show function to show a specified book in our database
+// Show function to show a specified order in our database
 
 const show = async (req: express.Request, res: express.Response) => {
+  // Validating user token
+  try {
+    const authorizationHeader: unknown = req.headers.authorization
+    const token = (authorizationHeader as string).split(' ')[1]
+    jwt.verify(token, process.env.TOKEN_SECRET as string)
+  } catch (err) {
+    res.status(401)
+    res.json('Access denied . Token is invalid')
+    // we must use "return " to exit the function when the token is not valid
+    return
+  }
   // eslint-disable-next-line prefer-destructuring
   const id: unknown = req.params.id
-  const specifiedOrder = await ordersLibrary.show(id as number)
   try {
+    const specifiedOrder = await ordersLibrary.show(id as number)
     res.json(specifiedOrder)
   } catch (err) {
     res.status(400).send(`Cant get order with id: ${id} .Error :${err}`)
@@ -77,6 +100,17 @@ const destroy = async (req: express.Request, res: express.Response) => {
 }
 
 const addProduct = async (req: express.Request, res: express.Response) => {
+  // Validating user token
+  try {
+    const authorizationHeader: unknown = req.headers.authorization
+    const token = (authorizationHeader as string).split(' ')[1]
+    jwt.verify(token, process.env.TOKEN_SECRET as string)
+  } catch (err) {
+    res.status(401)
+    res.json('Access denied . Token is invalid')
+    // we must use "return " to exit the function when the token is not valid
+    return
+  }
   try {
     const quantity = req.body.quantity
     const orderId = parseInt(req.params.id, 10)
