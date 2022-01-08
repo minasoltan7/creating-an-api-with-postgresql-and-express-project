@@ -18,17 +18,17 @@ As we are using GitHub to submit our project, adding the dotenv file on .gitigno
 
 However, to pass this project, the project reviewer will need to review the environment variables. Therefore, I am adding my environment variables here to help the reviewer connect to the database and reach the important variables for testing
 
-## .dotenv## 
-POSTGRES_HOST=127.0.0.1
-POSTGRES_DATABASE=e_supermarket
-POSTGRES_DATABASE_TEST=e_supermarket_test
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=1234
-PORT=3000
-TOKEN_SECRET=my_secret
-BCRYPT_PASSWORD=my_password
-SALT_ROUNDS=10
-ENV=dev
+## .dotenv 
+- POSTGRES_HOST=127.0.0.1
+- POSTGRES_DATABASE=e_supermarket
+- POSTGRES_DATABASE_TEST=e_supermarket_test
+- POSTGRES_USER=postgres
+- POSTGRES_PASSWORD=1234
+- PORT=3000
+- TOKEN_SECRET=my_secret
+- BCRYPT_PASSWORD=my_password
+- SALT_ROUNDS=10
+- ENV=dev
 
   
 
