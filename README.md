@@ -4,9 +4,9 @@
 1-First run *npm install* in project terminal to install all required node_modules for our preoject
 
 2-Create 2 empty database on your device one for development for testing :
-    *SQL queries to run*:
-    CREATE DATABASE e_supermarket
-    CREATE DATABASE e_supermarKet_test
+*SQL queries to run*:
+     1- CREATE DATABASE e_supermarket
+     2- CREATE DATABASE e_supermarket_test
 
   Note : The db_migrations file will be responsible for creating all required tables for our databases  
 
