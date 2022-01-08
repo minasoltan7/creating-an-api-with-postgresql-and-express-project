@@ -39,15 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookModel = void 0;
+exports.ProductModel = void 0;
+/* eslint-disable class-methods-use-this */
 var database_1 = __importDefault(require("../database"));
-// books (plural) table in the database, but the book (singular) file for the model?
-//  That's because the database table will hold many books, but the model file is defining what a book is for our application. 
-// The model is represented as a class, each book row in the database will be an instance of the book model. 
-var BookModel = /** @class */ (function () {
-    function BookModel() {
+var ProductModel = /** @class */ (function () {
+    function ProductModel() {
     }
-    BookModel.prototype.index = function () {
+    ProductModel.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_1;
             return __generator(this, function (_a) {
@@ -57,7 +55,7 @@ var BookModel = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM books';
+                        sql = 'SELECT * FROM products';
                         return [4 /*yield*/, conn.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -65,86 +63,67 @@ var BookModel = /** @class */ (function () {
                         return [2 /*return*/, result.rows];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("Could not get books. Error: ".concat(err_1));
+                        throw new Error("Could not get products. Error: ".concat(err_1));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    BookModel.prototype.show = function (id) {
+    ProductModel.prototype.show = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1.default.connect()];
+                        return [4 /*yield*/, database_1.default.connect()
+                            // the $1 refer to the first argument in the array of argument(s) we pass in the .query()
+                        ];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM books WHERE id=($1)';
+                        sql = 'SELECT * FROM products WHERE id=($1)';
                         return [4 /*yield*/, conn.query(sql, [id])];
                     case 2:
                         result = _a.sent();
                         conn.release();
-                        // returning first row in the book table
+                        // returning first row in the order table
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         err_2 = _a.sent();
-                        throw new Error("Cant get Book with id=".concat(id, ".Error:").concat(err_2));
+                        throw new Error("Cant get Product with id=".concat(id, ".Error:").concat(err_2));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    BookModel.prototype.create = function (b) {
+    ProductModel.prototype.create = function (p) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1.default.connect()];
+                        return [4 /*yield*/, database_1.default.connect()
+                            // the $1,$2 refer to the arguments number in the array of argument(s) we pass in the .query()
+                        ];
                     case 1:
                         conn = _a.sent();
-                        sql = 'INSERT INTO books (title,total_pages,author,type,summary)VALUES($1,$2,$3,$4,$5)';
-                        return [4 /*yield*/, conn.query(sql, [b.title, b.total_pages, b.author, b.type, b.summary])];
+                        sql = 'INSERT INTO products (name,price)VALUES($1,$2) RETURNING *';
+                        return [4 /*yield*/, conn.query(sql, [p.name, p.price])];
                     case 2:
                         result = _a.sent();
                         conn.release();
-                        // returning the row of the book we created
+                        // returning the row of the product we created
+                        console.log(result.rows[0]);
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         err_3 = _a.sent();
-                        throw new Error("Can't create new Book. Error ".concat(err_3));
+                        throw new Error("Can't create new product. Error ".concat(err_3));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    BookModel.prototype.destroy = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1.default.connect()];
-                    case 1:
-                        conn = _a.sent();
-                        sql = 'DELETE FROM books WHERE id=($1)';
-                        return [4 /*yield*/, conn.query(sql, [id])];
-                    case 2:
-                        result = _a.sent();
-                        conn.release();
-                        return [2 /*return*/, result.rows[0]];
-                    case 3:
-                        err_4 = _a.sent();
-                        throw new Error("Can't delete Book with id=".concat(id, ". Error ").concat(err_4));
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return BookModel;
+    return ProductModel;
 }());
-exports.BookModel = BookModel;
+exports.ProductModel = ProductModel;
