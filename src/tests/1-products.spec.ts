@@ -1,24 +1,37 @@
 import supertest from 'supertest'
 import app from '../server'
 import { ProductModel } from '../models/products'
+import Client from '../database'
 
 const request = supertest(app)
 
 // Testing Orders endpoints
 describe('Testing Products endpoints responses', () => {
   it('Testing our /products', async () => {
-    const response = await request.get('/products')
-    expect(response.status).toBe(200)
+    try {
+      const response = await request.get('/products')
+      expect(response.status).toBe(200)
+    } catch (err) {
+      throw new Error(`Cant reach /products endpoint ${err}`)
+    }
   })
   it('Testing our /product/:id endpoint', async () => {
-    const response = await request.get('/product/1 ')
-    expect(response.status).toBe(200)
+    try {
+      const response = await request.get('/product/1 ')
+      expect(response.status).toBe(200)
+    } catch (err) {
+      throw new Error(`Cant reach /product/:id endpoint' endpoint ${err}`)
+    }
   })
   it('Testing our /newProduct endpoint', async () => {
-    const response = await request.post('/newProduct')
-    // Testing if our endpoint needs authorization token
-    // if authentication token is required and not given to the header authorization we recieve status 401
-    expect(response.status).toBe(401)
+    try {
+      const response = await request.post('/newProduct')
+      // Testing if our endpoint needs authorization token
+      // if authentication token is required and not given to the header authorization we recieve status 401
+      expect(response.status).toBe(401)
+    } catch (err) {
+      throw new Error(`Cant reach /newProduct endpoint ${err}`)
+    }
   })
 })
 
@@ -34,6 +47,42 @@ describe('testing Products methods', () => {
   })
   it('testing if create method exist', () => {
     expect(myProduct.create).toBeDefined()
+  })
+})
+
+describe('testing Products functionality', () => {
+  it('create method should return a specific product', async () => {
+    const result = await myProduct.create({
+      name: 'cheese',
+      price: 4
+    })
+    expect(result).toEqual({
+      id: 1,
+      name: 'cheese',
+      price: 4
+    })
+  })
+  it('create method should return a specific product', async () => {
+    const result = await myProduct.create({
+      name: 'Meat',
+      price: 50
+    })
+    expect(result).toEqual({
+      id: 2,
+      name: 'Meat',
+      price: 50
+    })
+  })
+  it('create method should return a specific product', async () => {
+    const result = await myProduct.create({
+      name: 'Chicken',
+      price: 30
+    })
+    expect(result).toEqual({
+      id: 3,
+      name: 'Chicken',
+      price: 30
+    })
   })
 
   it('index method should return a specific product', async () => {
@@ -53,21 +102,6 @@ describe('testing Products methods', () => {
         id: 3,
         name: 'Chicken',
         price: 30
-      },
-      {
-        id: 4,
-        name: 'Milk',
-        price: 10
-      },
-      {
-        id: 5,
-        name: 'Tuna',
-        price: 10
-      },
-      {
-        id: 6,
-        name: 'Tissues',
-        price: 2
       }
     ])
   })
@@ -80,15 +114,18 @@ describe('testing Products methods', () => {
       price: 4
     })
   })
-  it('create method should return a specific product', async () => {
-    const result = await myProduct.create({
-      name: 'toothpaste',
-      price: 2
-    })
-    expect(result).toEqual({
-      id: 7,
-      name: 'toothpaste',
-      price: 2
-    })
+
+  afterAll(async () => {
+    try {
+      const conn = Client.connect()
+      // We are deleting all data in our orders table in order to run the test again properly with plain fields in each column
+      const sql1 = 'TRUNCATE products CASCADE'
+      // We are restarting the sequence of id of orders to begin from 1 when running the test the next time
+      const sql2 = 'ALTER SEQUENCE products_id_seq RESTART WITH 1'
+      await (await conn).query(sql1)
+      await (await conn).query(sql2)
+    } catch (err) {
+      throw new Error(`Cant truncate products table. ${err}`)
+    }
   })
 })

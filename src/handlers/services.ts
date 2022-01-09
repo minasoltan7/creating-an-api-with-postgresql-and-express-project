@@ -5,18 +5,30 @@ import DashboardQueries from '../services/dashboard'
 const dashboard = new DashboardQueries()
 
 const productsInOrders = async (_req: Request, res: Response) => {
-  const products = await dashboard.productsInOrders()
-  res.json(products)
+  try {
+    const products = await dashboard.productsInOrders()
+    res.json(products)
+  } catch (err) {
+    throw new Error(`Could not get products in orders. Error: ${err}`)
+  }
 }
 
 const usersInOrders = async (_req: Request, res: Response) => {
-  const products = await dashboard.usersInOrders()
-  res.json(products)
+  try {
+    const products = await dashboard.usersInOrders()
+    res.json(products)
+  } catch (err) {
+    throw new Error(`Could not get users in orders. Error: ${err}`)
+  }
 }
 
 const mostExpensive5 = async (_req: Request, res: Response) => {
-  const products = await dashboard.mostExpesive5()
-  res.json(products)
+  try {
+    const products = await dashboard.mostExpesive5()
+    res.json(products)
+  } catch (err) {
+    throw new Error(`Could not get most expensive 5 products in orders. Error: ${err}`)
+  }
 }
 
 const dashboardRoutes = (app: express.Application) => {

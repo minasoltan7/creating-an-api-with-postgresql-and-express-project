@@ -8,8 +8,8 @@ const productsLibrary = new ProductModel()
 
 // index function to show al items in our products table
 const index = async (req: express.Request, res: express.Response) => {
-  const allProducts = await productsLibrary.index()
   try {
+    const allProducts = await productsLibrary.index()
     res.json(allProducts)
   } catch (err) {
     res.status(400).send(`cant get products .Error :${err}`)
@@ -20,8 +20,8 @@ const index = async (req: express.Request, res: express.Response) => {
 const show = async (req: express.Request, res: express.Response) => {
   // eslint-disable-next-line prefer-destructuring
   const id: unknown = req.params.id
-  const specifiedProduct = await productsLibrary.show(id as number)
   try {
+    const specifiedProduct = await productsLibrary.show(id as number)
     res.json(specifiedProduct)
   } catch (err) {
     res.status(400).send(`Cant get products with id: ${id} .Error :${err}`)

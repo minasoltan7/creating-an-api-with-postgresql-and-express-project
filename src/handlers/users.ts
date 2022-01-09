@@ -55,8 +55,8 @@ const show = async (req: express.Request, res: express.Response) => {
 
   // eslint-disable-next-line prefer-destructuring
   const id: unknown = req.params.id
-  const specifiedUser = await newUser.show(id as number)
   try {
+    const specifiedUser = await newUser.show(id as number)
     res.json(specifiedUser)
   } catch (err) {
     res.status(400).send(`Cant get user with id: ${id} .Error :${err}`)

@@ -48,4 +48,19 @@ export class ProductModel {
       throw new Error(`Can't create new product. Error ${err}`)
     }
   }
+
+  async destroy(id: number): Promise<Product> {
+    try {
+      const conn = await Client.connect()
+      // the $1, refer to the first argument in the array of argument(s) we pass in the .query() method in line 28
+      // The RETURNING keyword in PostgreSQL gives an opportunity to return from the insert or update statement the values of any columns after the insert or update was run.
+      const sql = 'DELETE FROM orders WHERE id=($1) RETURNING *'
+      const result = await conn.query(sql, [id])
+      conn.release()
+      console.log(result.rows[0])
+      return result.rows[0]
+    } catch (err) {
+      throw new Error(`Can't delete order with id=${id}. Error ${err}`)
+    }
+  }
 }

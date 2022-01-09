@@ -43,7 +43,7 @@ export class OrderModel {
     }
   }
 
-  async create(o: Order): Promise<Order[]> {
+  async create(o: Order): Promise<Order> {
     try {
       const conn = await Client.connect()
       // the $1,$2,$3,$4,$5 refer to the arguments number in the array of argument(s) we pass in the .query() method in line 28

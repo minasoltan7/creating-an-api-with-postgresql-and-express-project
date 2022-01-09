@@ -9,7 +9,6 @@ const ordersLibrary = new OrderModel()
 
 // index function to show al items in our database
 const index = async (req: express.Request, res: express.Response) => {
-  const allOrders = await ordersLibrary.index()
   // Validating user token
   try {
     const authorizationHeader: unknown = req.headers.authorization
@@ -23,6 +22,7 @@ const index = async (req: express.Request, res: express.Response) => {
   }
 
   try {
+    const allOrders = await ordersLibrary.index()
     res.json(allOrders)
   } catch (err) {
     res.status(400).send(`cant get oders .Error :${err}`)
