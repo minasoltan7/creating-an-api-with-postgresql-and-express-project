@@ -26,7 +26,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "migrate": "db-migrate --env test up && db-migrate up",
-    "test": "set ENV=test&& db-migrate --env test up &&jasmine-ts && db-migrate db:drop test",
+    "test": "set ENV=test&& db-migrate --env test up &&jasmine-ts && db-migrate --env test reset",
     "build": "npx tsc",
     "start": "rimraf build &&  npm run build && nodemon ./build/server ",
     "dev": "nodemon ./src/server.ts",
